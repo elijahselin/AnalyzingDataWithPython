@@ -63,6 +63,7 @@ File Organization Nomenclature
     1. Materials
     2. Lab: Model Evaluation and Refinement
         1. Lab 5 Model Evaluation.ipynb
+	2. module_5_auto.csv
     3. Quiz: Model Refinement
     4. Acknowledgements
 
