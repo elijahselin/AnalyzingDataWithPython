@@ -1,0 +1,87 @@
+Module 2 - Data Wrangling
+
+Data wrangling, aka data cleaning or data preprocessing
+Purpose: to transform the data into a format that can be easily utilized during the analysis phase
+
+Steps
+
+***Determine what should be done about missing values***
+
+First, see if you can get ahold of a value for the hole from the source of the data
+
+Options:
+eliminate the attribute/variable
+eliminate the row (record, entry, item) (this is typically the best option if it's just a few odd missing values)
+    this is typically the best option if it's just a few odd missing values
+    strive to do something that has the least amount of impact
+    dataframes.dropna()
+        axis = 0 : drops the entire row
+        axis = 1 : drops the entire column
+        inplace = True : modify the data set directly and writes it right back into the data frame
+Replace the missing value with the average (or mode in the case of categoriacal values) of similar data points
+    less accurate results if you do this
+    consultation with a knowledgable source may also be a sufficient replacement for the mssing data point
+    dataframe.replace(missing_value, new_value)
+        mean = df["attribute"].mean()
+        df["attribute"].replace(np.nan, mean)
+Leave the missing value
+
+Remember that you can always seek out a higher quality data set or source if the current dataset is unsatifactory
+
+
+
+***Ensure consistent formats throughout the dataset***
+
+Ensure correct data types of all attributes so that meaningful comparisons can be made.
+
+An example for converting from imperial to metric with renaming the column name
+
+df["mpg"] = 235 / df["mpg"]
+df.rename(columns = ("mpg" : "L/100km"), inplace = True)
+
+An example for ensuring data in the data set has the right data type
+
+#see the data type of the column "attribute"
+dataframe.dtypes()
+
+#assuming it's incorrect somewhere, convert the data type with this
+dataframe.astype()
+    df["attribute"] = df["attribute"].astype("int")
+
+
+***Normalize data***
+
+differences in the ranges of variables can lead to inaccurate predictive models
+data normalization makes the ranges of variables consistent
+
+Options:
+Simple Scaling
+    df["attribute"] = df["attribute"] / df["attribute"].max()
+Min-Max Scaling
+    df["attribute"] = (df["attribute"] - df['attribute'].min) / (df["attribute"].max - df['attribute'].min)
+Z-score
+    df["attribute"] = (df["attribute"] - df['attribute'].mean()) / df["attribute"].std()
+
+
+***Binning***
+
+Binning can improve accuracy of predictive models and to take a large range of values and condense it into a limited number of bins
+(alot like a histogram)
+
+Here's an example
+
+# create 4 equally spaced intervals to define the bounds of 3 bins within the attribute
+bins = np.linspace(min(df["attribute"]), max(df["attribute"]),4)
+# create a list of your group names in order
+group_names = ["Low", "Medium", "High"]
+# sort the data values into the bins
+df["attribute-binned" = pd.cut(df["attribute], bins, labels = group_names, include_lowest = True)
+
+
+***Turning categorical variables into quantitative variables***
+
+Most statistical models cannot take objects/strings as an input. We would need to convert objects/strings to a numerical value
+
+One-hot encoding: create new features from the parent feature that have a value of 0 or 1 depending on if it's true or not
+    Fuel type => Create new features: gas, diesel with a value of either 1 or 0
+    pandas.get_dummies(df['attribute'])

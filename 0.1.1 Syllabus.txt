@@ -1,0 +1,76 @@
+Syllabus
+
+Topics Covered
+    1. Importing Data Sets
+    2. Cleaning the Data
+    3. Data Frame Manipulation
+    4. Summarizing the Data
+    5. Building Machine Learning Regression Models
+    5. Building Data Pipelines
+
+This course is delivered through lecture, lab, and assignments.
+Data Science Libraries: Pandas, Numpy, and Scipy
+
+File Organization Nomenclature
+    Module.Section.Subsection(optional).File.DependentFile
+
+**************Course Load and Associated Files*******************
+
+0. Materials
+    1. Syllabus
+        1. Syllabus.txt
+
+1. Module 1 - Importing Data Sets
+    0. Module Information
+        1. Learning Objectives.txt
+    1. Materials
+        1. Notes.txt
+    2. Lab 1: Importing Data Sets
+        1. Lab 1 Importing Data Sets.ipynb
+    3. Quiz: Importing Data Sets
+
+2. Module 2 - Data Wrangling
+    0. Module Information
+        1. Learning Objectives.txt
+    1. Materials
+        1. Notes.txt
+    2. Lab 2: Data Wrangling
+        1. Lab 2 Data Wrangling.ipynb
+        2. clean_df.csv
+    3. Quiz: Data Wrangling
+
+3. Module 3 - Exploratory Data Analysis
+    0. Module Information
+        1. Learning Objectives.txt
+    1. Materials
+        1. Notes.txt
+    2. Lab 3: Exploratory Data Analysis
+        1. Lab 3 Exploratory Data Analysis.ipynb
+    3. Quiz: Exploratory Data Analysis
+
+4. Module 4 - Model Development
+    0. Module Information
+        1. Learning Objectives.txt
+    1. Materials
+	1. Notes.txt
+    2. Lab: Model Development
+        1. Lab 4 Model Development.ipynb
+    3. Quiz: Model Development
+
+5. Module 5 - Model Evaluation
+    0. Module Information
+        1. Learning Objectives.txt
+    1. Materials
+    2. Lab: Model Evaluation and Refinement
+        1. Lab 5 Model Evaluation.ipynb
+    3. Quiz: Model Refinement
+    4. Acknowledgements
+
+6.Module 6 Final Assignment
+    0. Module Information
+        1. Learning Objectives.txt
+    1. Peer-graded Assignment: Drinking Habits of Global Population
+	1. Final Assignment.ipynb
+	2. Question 8 Screenshot.png
+	3. Question 9 Screenshot.png
+	4. Question 10 Screenshot.png

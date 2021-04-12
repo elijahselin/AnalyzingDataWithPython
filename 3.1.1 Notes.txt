@@ -1,0 +1,99 @@
+***Exploratory Data Analysis***
+
+Goals:
+    Summarize main characteristics of the data.
+    Gain better understanding of the data set
+    Uncover relationships between variables
+    Extract important variables
+
+"What are the characteristics that have the most impact on the car price?"
+
+Methods:
+*Descriptive statistics
+*Grouping with GroupBy
+*ANOVA
+*Correlation
+
+***Descriptive Statistics***
+
+Describe basic features of data
+give short summaries about the sample and measure of the data
+
+describe() function from pandas gives some basic statistics of the data set
+
+categorical data can be looked at witht the value_counts() method
+
+box plots visualizes data distribution and outliers
+allows for comparison in distribution between groups
+
+scatter plot shows the relationship between two variables
+predictor/independent variable = x-axis
+target/dependent variable = y-axis
+using the matplotlib function plt.scatter()
+always include axis and chart titles
+
+***GroupBy in Python***
+
+dataframe.groupby() method groups by categorical variable
+can use single or multiply variables
+
+pivot table: one variable displayed along columns and the other along rows
+dataframe.pivot() method
+
+heat map assigns color intensity to a grid based on data at grid points
+plt.pcolor() method
+
+***Correlation***
+
+Correlation: Measure to what extent different variables are interdependent
+Correlation doesn't imply causation!!!
+
+Positive/Negative linear correlation can be determined via seaborn.regplot()
+weak correlations show more or less horizontal regression lines
+
+***Correlation - Statistics***
+
+Pearson correlation gives two features to measure strength of correlation
+*Correlation coefficient
+    +1 strong positive relationship
+     0 no relationship
+    -1 strong negative relationship
+*P-value
+    p < 0.001 strong certainty in the result
+    p < 0.05 Moderate Certainty in the result
+    p < 0.1 Weak Certainty in the result
+    p > 0.1 No certainty in the result
+
+Strong correlation when:
+    correlation coefficient is close to 1 or -1
+    p value less than 0.001
+
+example:
+pearson_coef, p_value = stats.pearsonr(df["horsepower"], df['price'])
+
+you can make a heatmap that incidactes the correlation between each of the
+variables with one another
+
+***Analysis of Variance ANOVA***
+
+ANOVA - Statistical comparison of groups
+    eg: average price of differennt vehicle makes
+
+Returns:
+    F-test score: variation between sample group means divided by variation
+        within sample group
+    p-value: confidence degree
+
+Small F-test score implies poor correlation between variable categories and
+    target variable
+
+Example in Python
+
+# extract make and price data
+df_anova = df[["make", "price"]]
+
+# group data by makes
+grouped_anova = df_anova.groupby(["make"])
+
+#anova test via f_oneway method in SI/PI package
+anova_results_1 = stats.f_oneway(grouped_anova.get_group("honda")["price], grouped_anova.get_group("subaru")["price])

@@ -1,0 +1,149 @@
+***MODULE 5 - MODEL EVALUATION***
+
+
+***Model Evaluation and Refinement***
+
+In-sample model evaluation doesn't tell us how well the model can make accurate
+predictions with new data
+
+A common out of sample technique is cross validation, to take a portion of the
+data set is used to train the model and the remaining portion is used for
+testing the model.
+EXAMPLE:
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size = 0.3, random_state = 0)
+
+where:
+x_data: features or independent variables
+y_data: dataset target: df['price']
+x_train, y_train: parts of available data as testing set
+test_size: percentage of the data for testing (here it is 30%)
+random_state: number generator used for random sampling
+
+
+If you use alot of training data, and little testing data, you get results that
+are around the true answer, but are not very precise.
+If you use alot of testing data, but little training data, you get results that
+are precise but not necessarily close to the true answer.
+
+A solution to this is to divide the data set into partitions and then use a
+differennt combination of partitions each time you train the model.
+EXAMPLE:
+
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(lr, x_data, y_data, cv = 3)
+np.mean(scores)
+
+
+if you want it to return the predictions that were obtained in the test set:
+EXAMPLE:
+
+from skleanr.model_selection import cross_val_predict
+yhat = cross_val_predict(lr2e, x_data, y_data, cv = 3)
+
+
+
+***Overfitting, Underfitting and Model Selection***
+
+Overfitting - when the order of the function used to predict new data is too
+high and starts to be negatively affected by the noise of the data.
+
+Underfitting - when the order of the function is too low and the function is
+not complex enough to fit lay of the data (eg a linear function trying to fit a
+parabolic function)
+
+Ideally, you want to pick a function that has the best R^2 for both the training
+data and the test data.
+
+It is also important to consider other mathematical functions such as
+logarithmic or trigonometric functions.
+
+EXAMPLE:
+
+#create and empty list to store the values
+Rsqu_test = []
+#create a list containing different polynomial orders
+order = [1,2,3,4]
+#iterate through the list using a loop
+for n in order:
+	# create a polynomial feature object with the order of the polynomial as a
+		# parameter
+	pr = PolynomialFeatures(degree = n)
+	#trainsform the training and test data into a polynomial using the fit
+		#transofrm method
+	x_train_pr = pr.fit_transform(x_train[['horsepower']])
+	x_test_pr = pr.fit_transform(x_test[['horsepower']])
+	#fit the regression model using the transformed data
+	lr.fit(x_train_pr, y_train)
+	#calculate the r^2 using the test data and store it in the array
+	rsqu_test.append(lr.score(x_test_pr, y_test))
+
+
+
+***Ridge Regression***
+
+With high order polynomials, overfitting may be caused by ovely large coefficients
+You can control the size of these coefficients with the term 'alpha'
+When alpha is too small, the predicted function overfits the data
+When alpha is too large, the predicted function underfits the data.
+EXAMPLE:
+
+#import ridge from sklearn.linear_models
+from sklearn.linear_model import Ridge
+#create a ridge object using the constructor using alpha as an argument
+RidgeModel = Ridge(alpha = 0.1)
+#train the model using the fit method
+RidgeModel.fit(X,y)
+#use the predict method to make a prediction
+Yhat = RidgeModel.predict(X)
+
+
+
+***Grid Search***
+
+Grid search scans through many different "hyperparameters" (e.g. 'alpha') at
+once using cross validation.
+This allows us to pick the best ridge regression model easily without manually
+picking through values for each hyperparameter.
+
+This is done by splitting the dataset into three parts:
+The training set, the Validation set, and the test set
+then we train the model using different models and hyperparameters and test
+with the test set
+
+The value of your grid search is a list which contains a dictionary, where the
+key is the name of the parameter and the value is the different values of the
+parameter
+EXAMPLE:
+parameters = [{'alpha': [1, 10, 100, 1000]}]
+
+EXAMPLE:
+
+***
+#import libraries needed
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import GridSearchCV
+
+#dictionary of parameter values
+parameters1 = [{'alpha': [0.001, 0.1, 1, 10, 100, 1000, 10000, 100000]}]
+
+#create a ridge regression object(model)
+RR = Ridge()
+
+#create the GridSearchCV object
+Grid1 = GrdiSearchCV(RR, parameters1, cv=4)
+
+#fit the object
+Grid1.fit(x_data[['horsepower', 'curb_weight', 'engine-size', 'highway-mpg']], y_data)
+
+#find best values for the free parameters using the attribute 'best_estimator_'
+Grid1.best_estimator_
+
+#we can get the mean score on validation data using the attribute "cv_results_"
+scores = Grid1.cv_results_
+scores['mean_test_score']
+***
+
+W/ grid search, we can find the best value among multiple parameters
+such as doing both alpha and whether to normalize or not

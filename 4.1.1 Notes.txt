@@ -1,0 +1,293 @@
+Module 4 Model Development
+
+
+***MODEL DEVELOPMENT***
+
+
+Covered in this module:
+* Simple and Multiple Linear Regression
+* Model Evaluation using Visualization
+* Polynomial Regression and Pipelines
+* R-squared and MSE for In-Sample Evaluation
+* Prediction and Decision Making
+
+All for the purpose of answering the question
+"How can you determine a fair value for a used car?"
+
+
+Model - a mathematical equation used to predict a value given one
+or more values
+
+More, relevant data increases the accuracy of your model
+
+Having options for different types of models can help you pick the best one
+In this course:
+* Simple Linear Regression
+* Multiple Linear Regression
+* Polynomial Regression
+
+
+***LINEAR REGRESSION AND MULTIPLE LINEAR REGRESSION***
+
+
+Linear regresssion- one independent variable used to make a prediction
+Multiple linear regression - multiple ind. variables used to make a prediction
+
+Linear Regression: y = b0 + (b1)(x)    (basically y = mx + b)
+where x is the ind variable and y is the prediction
+
+To determine our line we take data points from the data set,
+and use them as training data for our model.
+
+Typically this is done by storing the data points in data frames or numpy arrays
+
+store the independent variable to data frame x and the targets to data frame y
+
+FITTING THE MODEL IN PYTHON
+
+1. Import linear_model from scikit-learn
+from sklearn.linear_model import LinearRegression
+
+2. Create a Linear Regression Object using the constructor
+lm = LinearRegression()
+
+3. Define the predictor variable and target variable
+X = df[['highway-mpg']]
+Y = df['price]
+
+4. Then use lm.fit (X, Y) to fit the model, i.e find the parameters b0 and b1
+lm.fit (X, Y)
+
+5. Obtain a prediction
+Yhat = lm.predict(X)
+
+Attributes of lm
+lm.intercept_ = y-intercept of the linear regression
+lm.coef_ = slope of the linear regression
+
+MULTIPLE LINEAR REGRESSION
+find the relationship between one continuous target (Y) variable
+and two or more predictor (X) variables
+
+Yhat = (b0) + (b1)(x1) + (b2)(x2) + ... (bn)(xn)
+
+where
+b0 is the intercept (y when x = 0)
+bn is the coefficient of parameter xn
+
+Fitting a Multiple Linear Model Estimator
+
+1. Extract the predictor variables and store them in variable Z
+Z = df[['horsepower', 'curb-weight', 'engine-size', 'highway-mpg']]
+
+2. Train the model
+lm.fit(Z, df['price'])
+
+3. Obtain the prediction
+Yhat = lm.predict(X)
+Input is an array or data frame with as many columsn as ind. variables
+and rows for the number of samples
+Output is an array with the same number of elements as number of samples.
+
+Attributes of lm
+lm.intercept_ = b0 or y intercept
+lm.coef_ = array of the coefficients of each parameter
+
+
+***MODEL EVALUATION USING VISUALIZATION***
+
+
+Regression plots give us a good estimate of:
+1. The relationship between two variables
+2. The strength of the correlation
+3. The direction of the relationship (positive or negative)
+
+Regression plots show a combination of the scatter plot and the fitted linear
+regression line (Yhat)
+
+Plotting a regression plot in Python
+
+import seaborn as sns
+sns.regplot(x = 'highway-mpg', y = 'price', data = df)
+plt.y.lim(0,)
+
+Residual plot represents the error between the actual value and the model.
+
+When we plot a residual plot, we want to see the points to be distributed evenly
+with a mean of zero and with a similiar variance. We don't want any obvious
+curves in our residual plot.
+
+If theres is a clear curve in your residual plot, the linear model is deemed
+incorrect. Curvature in the residual plot indicates a non-linear function.
+
+A cone shape, where the variance changes with x also indicates the linear model
+is inappropriate.
+
+Plotting a residual plot.
+
+import seaborn as sns
+sns.residplot(df['highway-mpg'], df['price'])
+
+Distribution plots count the predicted value versus the acual value
+very effective in visualizing models with more than one independent variable
+
+Creating a distribution plot
+
+import seaborn as sns
+axl = sns.distplot(df['price'], hist = False, color = 'r', label = 'Actual Value')
+sns.displot(Yhat, hist = Fales, color ='b', label = 'Fitted Values', ax = axl)
+
+
+***POLYNOMIAL REGRESSION AND PIPELINES***
+
+
+Polynomial regression
+A special case of general linear regression for describing curvilinear relationships
+(a function with higher degree variables)
+
+Quadratic - 2nd order
+Y = Ax^2 + Bx + C
+cubic - 3rd order
+Y = Ax^3 + Bx^2 + Cx + D
+higher order regressions also exist
+
+Polynomial regression example
+
+1. Calculate Polynomial of 3rd order
+f = np.polyfit(x, y, 3)
+p = np.polyld(f)
+
+2. Print out the model
+print(p)
+
+Multi dimensional polynomial linear regression
+(w/ multiple independent "x" variables)
+is also possible, but not in numPy 
+
+Multi Dimensional Polynomial Regression Example
+
+from sklean.preprocessing import PolynomialFeatures
+pr = PolynomialFeatures(degree = 2, include_bias = False)
+x_polly = pr.fit_transform(x[['horsepower', 'curb-weight']])
+
+Multi Dimensional Polynomial Regression Example 2
+
+pr = PolynomialFeatures(degree = 2, include_bias = False)
+pr.fit_transform([[1, 2]])
+
+Pre-processing
+
+Normalizing each feature
+
+from sklean.ppreprocessing import Standard Scaler
+SCALE = StandardScaler()
+SCALE.fit(x_data[['horsepower', 'highway-mpg']])
+x_scale = SCALE.transform(x_data[['horsepower', 'highway_mpg']])
+
+
+PIPELINES
+
+Many steps to getting a prediction
+
+Normalization > Polynomial Transform > Linear Regression
+
+This can be simplified by a pipeline, which performs the entire series of
+transformations
+
+Example:
+
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklean.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+Input = [('Scale', StandardScaler()), ('polynomial', PolynomialFeatures(degree = 2)), ('mode', LinearRegression())]
+
+pipe = Pipeline(Input)
+
+Pipe.fit(df[['horsepower', 'curb_weight', 'engine_size', 'highway-mpg']], y)
+yhat = Pipe.predict(X[['horsepower', 'curb_weight', 'engine-size', 'highway-mpg']])
+
+
+***MEASURES FOR IN-SAMPLE EVALUATION***
+
+
+Numerically determine how well the model fits on the dataset
+*Mean Square Error (MSE)
+*R-squared (R^2)
+
+MSE example in Python
+
+from sklearn.metrics import mean_squared_error
+mean_squared_error(df['price'], Y_predict_simple_fit)
+
+
+R^2 aka Coefficient of Determination
+A measure used to determine how close the data is to the fitted regression line
+
+Example for R^2
+X = df[['highway-mpg]]
+Y = df['price]
+lm.fit(X, Y)
+lm.score(X,y)
+
+
+***PREDICTION AND DECISION MAKING***
+
+
+To determine final best fit, look at...
+* if the predicted values make sense
+* visualization
+* numerical measures for evaluation
+* comparison between models
+
+DO PREDICTED VALUES MAKE SENSE? (Example)
+1. Train the model
+lm.fit(df['highway-mpg'], df['prices'])
+
+2. Predict the price of a car w 30 highway-mpg
+lm.predict(np.array(30.0).reshape(-1, 1))
+
+3. Look at Result
+$13771.30
+It's not negative, or exceedingly high or low
+
+4. Look at coefficients
+lm.coef_
+-821.73337832
+
+
+Sometimes the model will produce values that don't make sense.
+If we look at our highway-mpg/price model, we get negative values given a
+certain mileage value. This may be because we don't have data for cars in
+that range. Thus, beyond a certain threshold, the model can be considered no
+longer valid.
+
+(Remember in Statistics how it was emphasized that extrapolation was dangerous?)
+
+Use numpy to generate a sequence from 1 to 100
+
+import numpy as np
+new_input = np.arrange(1, 101, 1).reshpae(-1, 1)
+
+Predicting new values
+
+yhat = lm.predict(new_input)
+
+VISUALIZATION
+
+Look at
+*Regression Plot
+*Residual Plot
+*Distribution Plot
+
+NUMERICAL MEASURES FOR EVALUATION
+
+*MSE
+*R^2
+
+Comparing MLR and SLR
+(Multiple Linear Regression and Simple Linear Regression)
+
+lower MSE doesn't always imply a better fit
+MLR models will have smaller MSE and R^2 values than SLR models

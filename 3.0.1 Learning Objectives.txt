@@ -1,0 +1,7 @@
+Module 3 - Exploratory Data Analysis
+
+Learning Objectives
+    * Descriptive Statistics
+    * Basics of Grouping
+    * ANOVA
+    * Correlation

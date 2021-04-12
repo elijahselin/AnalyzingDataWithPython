@@ -1,0 +1,101 @@
+***The Problem***
+
+Wanting to sell a used car, but unsure about what price.
+What price should we sell by given what other used cars sell for?
+Aiming for highest viable (or marketable) price.
+
+***Dataset***
+
+By Jeffrey C. Schlemmer
+Format: CSV
+Links:
+    https://archive.ics.uci.edu/ml/machine-learning-databases/autos/
+    https://archive.ics.uci.edu/ml/machine-learning-databases/autos/imports-85.names
+
+Price is our target value, all other variables in dataset are predictors
+This dataset is from 1985 BTW. Somewhat dated.
+
+***Python Packages for Data Science***
+
+Scientific Computing Libraries
+    Pandas - Data structures and tools
+    Numpy - Arrays and matrices
+    SciPy - Integrals, Solving differential equations, optimization
+Visualization Libraries:
+    Matplotlib - plots and graphs
+    Seaborn - heatmaps, time series, violin plots
+Algorithmic:
+    Scikit-learn - Machine learning: regression, classification, clustering
+    Statsmodels - Data exploration, estimation of statistical models, performance of statistical tests
+
+***Importing and Exporting Data in Python***
+
+Goal: load and read data into our notebook from a variety of sources.
+Format: the way data is encoded
+    CSV, Json, XLSX, HDF, etc.
+File Path: where the data is being stored
+    Sourced either locally or on the web
+
+CSV
+Each row is a datapoint with a large number of associated properties
+values separated by commas
+
+Read CSV using pandas
+
+import pandas as pd
+urlOrFilePath = "www.thisdatset.com"
+df = pd.read_csv(urlOrFilePath, header = None)
+
+looking at the dataframe
+
+df.head(n) -  top n rows
+df.tail(n) - bottom n rows
+
+Adding Headers
+
+headers = ["this", "is", "a", "list", "of", "headers"]
+df.columns = headers
+
+Exporting panda datframe to csv
+
+path = "C:/Users/Main/automobile.csv"
+df.to_csv(path)
+
+We're only using CSV format for this course, but other formats are possible
+in pandas (csv, json, Excel, sql, etc.). The process between formats are
+very much the same.
+
+***Getting Started Analyzing Data in Python***
+
+Why check data types?
+    1. Data types are assigned automatically assigned and may need to be checked.
+    2. Compatibility with python methods
+dataframe.dtypes
+
+dataframe.describe()
+    returns a statistical summary
+    include = "all" argument returns full summary statistics
+df.info()
+    displayes top 30 rows and bottom 30 rows of the dataframe
+
+***Accessing Databases with Python***
+
+Example of using DB-API
+
+from dbmodule import connect
+
+#Create connection object
+connection = connect('databasename', 'username', 'pswd')
+
+#Create a cursor object
+cursor = connection.cursor()
+
+#Run queries
+cursor.execute('select * from mytable')
+results = cursor.fetchall()
+
+#Free resourcees
+cursor.close()
+connection.close()
+
+Do not forget the free resources step when using DB-API

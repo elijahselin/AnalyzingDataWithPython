@@ -1,0 +1,5 @@
+Module 6 - Final Assignment
+
+Learning Objectives
+    * Create a Jupyter notebook.
+    * Analyses and Predict Global Drinking Habits Data
